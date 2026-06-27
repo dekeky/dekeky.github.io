@@ -258,44 +258,24 @@
       font-family: ui-monospace, monospace;
     }
 
-    .hero-embed-body {
-      position: relative;
-      min-height: min(68vh, 640px);
+    .hero-screenshot-wrap {
+      line-height: 0;
       background: var(--bg);
     }
 
-    .hero-embed-frame {
+    .hero-screenshot-link {
+      display: block;
+      transition: opacity 0.2s;
+    }
+
+    .hero-screenshot-link:hover {
+      opacity: 0.92;
+    }
+
+    .hero-screenshot-link img {
       display: block;
       width: 100%;
-      height: min(68vh, 640px);
-      border: 0;
-      background: var(--bg);
-    }
-
-    .hero-embed-fallback {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      min-height: min(68vh, 640px);
-      padding: 32px 24px;
-      text-align: center;
-    }
-
-    .hero-embed-fallback p {
-      max-width: 420px;
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    .hero-embed-fallback[hidden] {
-      display: none !important;
-    }
-
-    .hero-embed-frame[hidden] {
-      display: none !important;
+      height: auto;
     }
 
     /* Sections */
@@ -538,19 +518,17 @@
           <span></span><span></span><span></span>
           <div class="url">159.75.51.78:8082/chat</div>
         </div>
-        <div class="hero-embed-body">
-          <iframe
-            id="demo-chat-frame"
-            class="hero-embed-frame"
-            hidden
-            title="Finclaw 在线对话"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
-          <div id="demo-chat-fallback" class="hero-embed-fallback">
-            <p id="demo-chat-fallback-text">正在加载在线演示…</p>
-            <a class="btn btn-primary" href="http://159.75.51.78:8082/chat" target="_blank" rel="noopener">在新窗口打开对话</a>
-          </div>
+        <div class="hero-screenshot-wrap">
+          <a class="hero-screenshot-link" href="http://159.75.51.78:8082/chat" target="_blank" rel="noopener" title="点击打开在线体验">
+            <img
+              src="assets/chat-screenshot.png"
+              alt="Finclaw 对话界面：侧边栏、巴菲特 Agent 与聊天输入区"
+              width="1920"
+              height="1080"
+              loading="lazy"
+              decoding="async"
+            />
+          </a>
         </div>
       </div>
     </section>
@@ -655,32 +633,5 @@
       </div>
     </footer>
   </div>
-  <script>
-    (function () {
-      var DEMO_CHAT_URL = 'http://159.75.51.78:8082/chat';
-      var frame = document.getElementById('demo-chat-frame');
-      var fallback = document.getElementById('demo-chat-fallback');
-      var fallbackText = document.getElementById('demo-chat-fallback-text');
-      var pageHttps = location.protocol === 'https:';
-      var demoHttps = DEMO_CHAT_URL.indexOf('https:') === 0;
-
-      if (pageHttps && !demoHttps) {
-        fallbackText.textContent =
-          '本页为 HTTPS，无法内嵌 HTTP 演示站（浏览器混合内容限制）。请在新窗口打开体验；若演示站配置 HTTPS 后即可在此直接嵌入。';
-        fallback.hidden = false;
-        return;
-      }
-
-      frame.hidden = false;
-      fallback.hidden = true;
-      frame.src = DEMO_CHAT_URL;
-
-      frame.addEventListener('error', function () {
-        frame.hidden = true;
-        fallback.hidden = false;
-        fallbackText.textContent = '无法加载在线演示，请在新窗口打开。';
-      });
-    })();
-  </script>
 </body>
 </html>
