@@ -88,13 +88,6 @@
       color: inherit;
     }
 
-    .brand img {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      object-fit: cover;
-    }
-
     .brand span {
       font-weight: 700;
       font-size: 1.25rem;
@@ -265,44 +258,44 @@
       font-family: ui-monospace, monospace;
     }
 
-    .hero-mascot-wrap {
-      padding: 32px 24px 40px;
+    .hero-embed-body {
+      position: relative;
+      min-height: min(68vh, 640px);
+      background: var(--bg);
+    }
+
+    .hero-embed-frame {
+      display: block;
+      width: 100%;
+      height: min(68vh, 640px);
+      border: 0;
+      background: var(--bg);
+    }
+
+    .hero-embed-fallback {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
+      justify-content: center;
+      gap: 16px;
+      min-height: min(68vh, 640px);
+      padding: 32px 24px;
+      text-align: center;
     }
 
-    .hero-mascot-wrap img {
-      width: min(180px, 40vw);
-      filter: drop-shadow(0 12px 32px rgba(61, 214, 197, 0.2));
-    }
-
-    .hero-chat-preview {
-      width: 100%;
-      max-width: 480px;
-      text-align: left;
-    }
-
-    .chat-bubble {
-      padding: 14px 18px;
-      border-radius: 14px;
-      font-size: 0.9rem;
-      margin-bottom: 10px;
-      max-width: 90%;
-    }
-
-    .chat-bubble.user {
-      margin-left: auto;
-      background: var(--accent-dim);
-      border: 1px solid rgba(61, 214, 197, 0.2);
-      color: var(--text);
-    }
-
-    .chat-bubble.agent {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
+    .hero-embed-fallback p {
+      max-width: 420px;
+      font-size: 0.95rem;
       color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .hero-embed-fallback[hidden] {
+      display: none !important;
+    }
+
+    .hero-embed-frame[hidden] {
+      display: none !important;
     }
 
     /* Sections */
@@ -517,7 +510,6 @@
   <div class="wrap">
     <header>
       <a class="brand" href="./">
-        <img src="assets/mascot.png" alt="" width="40" height="40" />
         <span>Finclaw</span>
       </a>
       <nav>
@@ -544,13 +536,20 @@
       <div class="hero-visual">
         <div class="hero-visual-bar">
           <span></span><span></span><span></span>
-          <div class="url">127.0.0.1:8082/chat</div>
+          <div class="url">159.75.51.78:8082/chat</div>
         </div>
-        <div class="hero-mascot-wrap">
-          <img src="assets/mascot.png" alt="Finclaw 吉祥物" />
-          <div class="hero-chat-preview">
-            <div class="chat-bubble user">帮我梳理一下宁德时代最新财报的核心看点</div>
-            <div class="chat-bubble agent">正在检索资料并分析关键财务指标…</div>
+        <div class="hero-embed-body">
+          <iframe
+            id="demo-chat-frame"
+            class="hero-embed-frame"
+            hidden
+            title="Finclaw 在线对话"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+          <div id="demo-chat-fallback" class="hero-embed-fallback">
+            <p id="demo-chat-fallback-text">正在加载在线演示…</p>
+            <a class="btn btn-primary" href="http://159.75.51.78:8082/chat" target="_blank" rel="noopener">在新窗口打开对话</a>
           </div>
         </div>
       </div>
@@ -656,5 +655,32 @@
       </div>
     </footer>
   </div>
+  <script>
+    (function () {
+      var DEMO_CHAT_URL = 'http://159.75.51.78:8082/chat';
+      var frame = document.getElementById('demo-chat-frame');
+      var fallback = document.getElementById('demo-chat-fallback');
+      var fallbackText = document.getElementById('demo-chat-fallback-text');
+      var pageHttps = location.protocol === 'https:';
+      var demoHttps = DEMO_CHAT_URL.indexOf('https:') === 0;
+
+      if (pageHttps && !demoHttps) {
+        fallbackText.textContent =
+          '本页为 HTTPS，无法内嵌 HTTP 演示站（浏览器混合内容限制）。请在新窗口打开体验；若演示站配置 HTTPS 后即可在此直接嵌入。';
+        fallback.hidden = false;
+        return;
+      }
+
+      frame.hidden = false;
+      fallback.hidden = true;
+      frame.src = DEMO_CHAT_URL;
+
+      frame.addEventListener('error', function () {
+        frame.hidden = true;
+        fallback.hidden = false;
+        fallbackText.textContent = '无法加载在线演示，请在新窗口打开。';
+      });
+    })();
+  </script>
 </body>
 </html>
