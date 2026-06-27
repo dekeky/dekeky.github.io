@@ -10,16 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0a0f14;
-      --bg-elevated: #111922;
-      --bg-card: #151d28;
-      --border: rgba(255, 255, 255, 0.08);
-      --text: #e8edf2;
-      --text-muted: #8b9aab;
-      --accent: #3dd6c5;
-      --accent-dim: rgba(61, 214, 197, 0.15);
-      --accent-glow: rgba(61, 214, 197, 0.35);
-      --gold: #e8b84a;
+      --bg: #030712;
+      --bg-elevated: rgba(15, 23, 42, 0.72);
+      --bg-card: rgba(15, 23, 42, 0.55);
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent: #22d3ee;
+      --accent-dim: rgba(34, 211, 238, 0.12);
+      --accent-glow: rgba(34, 211, 238, 0.4);
+      --gold: #fbbf24;
       --radius: 16px;
       --font: "DM Sans", "Noto Sans SC", system-ui, sans-serif;
     }
@@ -37,30 +37,68 @@
       overflow-x: hidden;
     }
 
-    .bg-grid {
+    /* Aurora mesh — Vercel / Linear 风格渐变光晕 */
+    .bg-mesh {
       position: fixed;
       inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent);
-      pointer-events: none;
       z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 90% 60% at 50% -15%, rgba(99, 102, 241, 0.35), transparent 55%),
+        radial-gradient(ellipse 55% 45% at 95% 15%, rgba(34, 211, 238, 0.2), transparent 50%),
+        radial-gradient(ellipse 50% 40% at 5% 85%, rgba(168, 85, 247, 0.18), transparent 50%),
+        radial-gradient(ellipse 40% 35% at 70% 75%, rgba(59, 130, 246, 0.12), transparent 45%);
     }
 
-    .bg-glow {
+    .bg-orb {
       position: fixed;
-      width: 720px;
-      height: 720px;
       border-radius: 50%;
-      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-      top: -280px;
-      left: 50%;
-      transform: translateX(-50%);
-      filter: blur(80px);
+      filter: blur(90px);
       pointer-events: none;
       z-index: 0;
+      opacity: 0.55;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    .bg-orb-1 {
+      width: 520px;
+      height: 520px;
+      top: -120px;
+      left: 15%;
+      background: rgba(99, 102, 241, 0.45);
+    }
+
+    .bg-orb-2 {
+      width: 420px;
+      height: 420px;
+      top: 30%;
+      right: -80px;
+      background: rgba(34, 211, 238, 0.3);
+      animation-delay: -6s;
+    }
+
+    .bg-orb-3 {
+      width: 380px;
+      height: 380px;
+      bottom: -60px;
+      left: -60px;
+      background: rgba(168, 85, 247, 0.28);
+      animation-delay: -12s;
+    }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to { transform: translate(24px, -18px) scale(1.06); }
+    }
+
+    .bg-noise {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
     }
 
     .wrap {
@@ -71,7 +109,6 @@
       padding: 0 24px;
     }
 
-    /* Header */
     header {
       display: flex;
       align-items: center;
@@ -112,7 +149,7 @@
 
     nav a:hover {
       color: var(--text);
-      background: rgba(255,255,255,0.06);
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .btn {
@@ -133,26 +170,26 @@
     .btn:active { transform: scale(0.98); }
 
     .btn-primary {
-      background: var(--accent);
-      color: #062018;
-      box-shadow: 0 0 24px var(--accent-dim);
+      background: linear-gradient(135deg, #22d3ee, #6366f1);
+      color: #030712;
+      box-shadow: 0 0 32px rgba(34, 211, 238, 0.25);
     }
 
     .btn-primary:hover {
-      box-shadow: 0 0 36px var(--accent-glow);
+      box-shadow: 0 0 48px rgba(99, 102, 241, 0.35);
     }
 
     .btn-ghost {
-      background: rgba(255,255,255,0.06);
+      background: rgba(255, 255, 255, 0.05);
       color: var(--text);
       border: 1px solid var(--border);
+      backdrop-filter: blur(8px);
     }
 
     .btn-ghost:hover {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.09);
     }
 
-    /* Hero */
     .hero {
       text-align: center;
       padding: 48px 0 72px;
@@ -164,12 +201,13 @@
       gap: 8px;
       padding: 6px 14px;
       border-radius: 999px;
-      background: var(--accent-dim);
-      border: 1px solid rgba(61, 214, 197, 0.25);
-      color: var(--accent);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text);
       font-size: 0.85rem;
       font-weight: 500;
       margin-bottom: 28px;
+      backdrop-filter: blur(12px);
     }
 
     .hero-badge::before {
@@ -178,12 +216,13 @@
       height: 6px;
       border-radius: 50%;
       background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
       animation: pulse 2s ease infinite;
     }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+      50% { opacity: 0.45; }
     }
 
     .hero h1 {
@@ -196,7 +235,7 @@
 
     .hero h1 em {
       font-style: normal;
-      background: linear-gradient(135deg, var(--accent), #7ae8dc);
+      background: linear-gradient(135deg, #22d3ee, #a78bfa, #6366f1);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -220,10 +259,14 @@
     .hero-visual {
       position: relative;
       border-radius: 20px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       background: var(--bg-elevated);
       overflow: hidden;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.45);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+        0 32px 80px rgba(0, 0, 0, 0.55),
+        0 0 80px rgba(99, 102, 241, 0.08);
+      backdrop-filter: blur(20px);
     }
 
     .hero-visual-bar {
@@ -232,14 +275,14 @@
       gap: 8px;
       padding: 12px 16px;
       border-bottom: 1px solid var(--border);
-      background: rgba(0,0,0,0.25);
+      background: rgba(0, 0, 0, 0.35);
     }
 
     .hero-visual-bar span {
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.12);
+      background: rgba(255, 255, 255, 0.12);
     }
 
     .hero-visual-bar span:first-child { background: #ff5f57; }
@@ -251,7 +294,7 @@
       margin-left: 8px;
       padding: 4px 12px;
       border-radius: 6px;
-      background: rgba(255,255,255,0.05);
+      background: rgba(255, 255, 255, 0.05);
       font-size: 0.75rem;
       color: var(--text-muted);
       text-align: left;
@@ -260,7 +303,7 @@
 
     .hero-screenshot-wrap {
       line-height: 0;
-      background: var(--bg);
+      background: #000;
     }
 
     .hero-screenshot-link {
@@ -269,7 +312,7 @@
     }
 
     .hero-screenshot-link:hover {
-      opacity: 0.92;
+      opacity: 0.95;
     }
 
     .hero-screenshot-link img {
@@ -278,7 +321,6 @@
       height: auto;
     }
 
-    /* Sections */
     section {
       padding: 64px 0;
     }
@@ -300,7 +342,7 @@
 
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 16px;
     }
 
@@ -309,12 +351,14 @@
       border-radius: var(--radius);
       background: var(--bg-card);
       border: 1px solid var(--border);
-      transition: border-color 0.2s, transform 0.2s;
+      backdrop-filter: blur(16px);
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
     }
 
     .feature-card:hover {
-      border-color: rgba(61, 214, 197, 0.25);
+      border-color: rgba(34, 211, 238, 0.3);
       transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
     }
 
     .feature-icon {
@@ -341,7 +385,6 @@
       line-height: 1.55;
     }
 
-    /* Roadmap */
     .roadmap {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -351,8 +394,9 @@
     .roadmap-item {
       padding: 28px;
       border-radius: var(--radius);
-      border: 1px dashed rgba(232, 184, 74, 0.35);
-      background: rgba(232, 184, 74, 0.06);
+      border: 1px dashed rgba(251, 191, 36, 0.35);
+      background: rgba(251, 191, 36, 0.05);
+      backdrop-filter: blur(12px);
     }
 
     .roadmap-item .tag {
@@ -375,9 +419,7 @@
       color: var(--text-muted);
     }
 
-    /* Steps */
     .steps {
-      counter-reset: step;
       display: flex;
       flex-direction: column;
       gap: 0;
@@ -423,18 +465,18 @@
       font-size: 0.85em;
       padding: 2px 6px;
       border-radius: 4px;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.08);
       font-family: ui-monospace, monospace;
     }
 
-    /* Download CTA */
     .cta-band {
       margin: 48px 0 80px;
       padding: 48px 32px;
       border-radius: 24px;
       text-align: center;
-      background: linear-gradient(135deg, rgba(61,214,197,0.12), rgba(61,214,197,0.04));
-      border: 1px solid rgba(61, 214, 197, 0.2);
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(34, 211, 238, 0.08));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
     }
 
     .cta-band h2 {
@@ -450,7 +492,6 @@
       margin-bottom: 0;
     }
 
-    /* Footer */
     footer {
       padding: 32px 0 48px;
       border-top: 1px solid var(--border);
@@ -481,11 +522,19 @@
       nav { width: 100%; }
       .hero { padding-top: 24px; }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bg-orb { animation: none; }
+      .hero-badge::before { animation: none; }
+    }
   </style>
 </head>
 <body>
-  <div class="bg-grid" aria-hidden="true"></div>
-  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="bg-mesh" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb-1" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb-3" aria-hidden="true"></div>
+  <div class="bg-noise" aria-hidden="true"></div>
 
   <div class="wrap">
     <header>
@@ -504,8 +553,8 @@
       <div class="hero-badge">私有化部署 · 开箱即用</div>
       <h1>你的金融 AI Agent<br /><em>一站搞定</em></h1>
       <p>
-        下载单个可执行文件即可运行。在浏览器里管理 Agent、配置模型、流式对话，
-        还可接入微信——专为投研与金融场景设计。
+        下载单个可执行文件即可运行。在浏览器里创建与管理 Agent、接入微信对话，
+        专为投研与金融场景设计。
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="http://159.75.51.78:8082/chat" target="_blank" rel="noopener">在线体验</a>
@@ -521,11 +570,9 @@
         <div class="hero-screenshot-wrap">
           <a class="hero-screenshot-link" href="http://159.75.51.78:8082/chat" target="_blank" rel="noopener" title="点击打开在线体验">
             <img
-              src="assets/chat-screenshot.png"
+              src="assets/finclawimg.jpg"
               alt="Finclaw 对话界面：侧边栏、巴菲特 Agent 与聊天输入区"
-              width="1920"
-              height="1080"
-              loading="lazy"
+              loading="eager"
               decoding="async"
             />
           </a>
@@ -539,23 +586,8 @@
       <div class="feature-grid">
         <article class="feature-card">
           <div class="feature-icon">🤖</div>
-          <h3>多 Agent 管理</h3>
-          <p>创建多个 Agent，编辑人设与 Skills，从市场一键安装模板，或上传自己的 Agent。</p>
-        </article>
-        <article class="feature-card">
-          <div class="feature-icon">⚡</div>
-          <h3>模型中心</h3>
-          <p>集中管理 API Key 与模型配置，多 Agent 复用；对话页顶栏随时切换模型。</p>
-        </article>
-        <article class="feature-card">
-          <div class="feature-icon">💬</div>
-          <h3>流式对话</h3>
-          <p>实时回复、推理过程与工具调用可视化；支持 Markdown、图表、图片与对话归档。</p>
-        </article>
-        <article class="feature-card">
-          <div class="feature-icon">📁</div>
-          <h3>工作区与文档</h3>
-          <p>在线浏览编辑 Agent 工作区文件，AI 辅助生成人设与润色文档。</p>
+          <h3>Agent 管理</h3>
+          <p>创建与管理多个 Agent，配置模型、编辑人设与 Skills，流式对话与工作区文档一体完成；支持 AI 辅助生成与润色。</p>
         </article>
         <article class="feature-card">
           <div class="feature-icon">🏪</div>
